@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JioMart - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Light and Dark Mode */
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        :root {
+            --bg-gradient: linear-gradient(135deg, #e0f7fa, #80deea);
+            --text-color: #333;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --header-bg: linear-gradient(90deg, #005BAC, #0288D1);
+            --header-text: white;
+            --accent-color: #FFD700;
+            --offer-bg: #F06292;
+        }
+
+        body.dark-mode {
+            --bg-gradient: linear-gradient(135deg, #263238, #455A64);
+            --text-color: #e0e0e0;
+            --card-bg: rgba(50, 50, 50, 0.9);
+            --shadow-color: rgba(255, 255, 255, 0.1);
+            --header-bg: linear-gradient(90deg, #003D7A, #01579B);
+            --header-text: #e0e0e0;
+            --accent-color: #FFCA28;
+            --offer-bg: #D81B60;
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .location {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .search-bar input {
+            padding: 12px 20px;
+            width: 400px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: var(--card-bg);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            transition: all 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .search-bar input:focus {
+            box-shadow: 0 0 15px rgba(0, 91, 172, 0.7);
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(360deg);
+        }
+
+        .sign-in {
+            background: linear-gradient(45deg, var(--accent-color), #FFCA28);
+            color: #005BAC;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+
+        .sign-in:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Sign-In Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            width: 450px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content h2 {
+            margin-bottom: 25px;
+            color: #005BAC;
+            font-size: 24px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 25px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .modal-content input:focus {
+            border: 1px solid #005BAC;
+            outline: none;
+        }
+
+        .modal-content button {
+            background: linear-gradient(45deg, #005BAC, #0288D1);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .modal-content button:hover {
+            background: linear-gradient(45deg, #003D7A, #01579B);
+            box-shadow: 0 0 15px rgba(0, 91, 172, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close:hover {
+            color: var(--text-color);
+        }
+
+        /* Navigation Styles */
+        nav {
+            background: var(--header-bg);
+            padding: 15px 30px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            position: relative;
+            z-index: 10;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav ul li a {
+            color: var(--header-text);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+            border-radius: 25px;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        nav ul li a:hover::after {
+            content: '➜';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+            font-size: 14px;
+            animation: bounce 0.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-50%) translateX(5px); }
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            background: var(--card-bg);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            z-index: 1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .dropdown a {
+            color: #005BAC !important;
+            padding: 12px 20px;
+            display: block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown a:hover {
+            background: #f1f1f1;
+            color: #003D7A !important;
+        }
+
+        nav ul li:hover .dropdown {
+            display: block;
+        }
+
+        /* Flying Elements */
+        .flying-element {
+            position: fixed;
+            z-index: 5;
+            pointer-events: none;
+            animation: fly 8s infinite ease-in-out;
+        }
+
+        .flying-element img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            50% { transform: translateY(50vh) rotate(360deg); opacity: 0.8; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px;
+            min-height: calc(100vh - 400px);
+            position: relative;
+            z-index: 8;
+        }
+
+        .banner {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            perspective: 1000px;
+        }
+
+        .banner-item {
+            flex: 1;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.5s ease;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            position: relative;
+            z-index: 9;
+        }
+
+        .banner-item:hover {
+            transform: scale(1.05) rotateY(10deg);
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+
+        .banner-item h3 {
+            margin-bottom: 15px;
+            color: var(--text-color);
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .banner-item p {
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .banner-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .banner-item button {
+            background: linear-gradient(45deg, #005BAC, #0288D1);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .banner-item button:hover {
+            background: linear-gradient(45deg, #003D7A, #01579B);
+            box-shadow: 0 0 20px rgba(0, 91, 172, 0.7);
+            transform: translateY(-3px);
+        }
+
+        /* 3D Offer Effect */
+        .offer-3d {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+
+        .offer-3d h3 {
+            font-size: 28px;
+            color: #D81B60;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .offer-3d p {
+            font-size: 22px;
+            color: #F50057;
+            font-weight: bold;
+            transform: translateZ(50px);
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .offer-3d:hover {
+            transform: rotateX(20deg) rotateY(20deg) scale(1.2);
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+
+        /* Deals Section */
+        .deals-section {
+            background: linear-gradient(45deg, var(--offer-bg), #F48FB1);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            text-align: center;
+        }
+
+        .deals-section h2 {
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .deals-section p {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .deals-section button {
+            background: linear-gradient(45deg, #4CAF50, #66BB6A);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .deals-section button:hover {
+            background: linear-gradient(45deg, #388E3C, #4CAF50);
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.7);
+            transform: translateY(-3px);
+        }
+
+        .deal-items {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .deal-item {
+            width: 200px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .deal-item:hover {
+            transform: scale(1.05) rotateY(10deg);
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+
+        .deal-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .deal-item h4 {
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .deal-item p {
+            color: #FF4D4D;
+            font-size: 14px;
+        }
+
+        /* Coin Explosion */
+        .coin {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: url('https://cdn.example.com/images/coin.png') no-repeat center;
+            background-size: contain;
+            z-index: 10;
+            animation: explode 1.5s forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(0.5); opacity: 0; }
+        }
+
+        /* Celebration Effect */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(45deg, var(--color1), var(--color2));
+            animation: confettiFall 3s ease-in-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 50px 30px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: var(--accent-color);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin: 12px 0;
+        }
+
+        .footer-section ul li a {
+            color: var(--header-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent-color);
+            padding-left: 10px;
+        }
+
+        /* Mouse Trail Effect */
+        .trail {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, rgba(0, 91, 172, 0.9), transparent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            box-shadow: 0 0 10px rgba(0, 91, 172, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">JioMart</div>
+        <div class="location">📍 Deliver to Guntur 522211</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search JioMart">
+        </div>
+        <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
+        <div class="sign-in" onclick="openModal()">Sign In</div>
+    </header>
+
+    <div class="modal" id="signInModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+            <h2>Sign In to JioMart</h2>
+            <input type="tel" id="phoneNumber" placeholder="Enter Phone Number" pattern="[0-9]{10}" required>
+            <button onclick="submitPhone()">Continue</button>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="#">Groceries</a>
+                <div class="dropdown">
+                    <a href="#">Fruits & Vegetables</a>
+                    <a href="#">Dairy & Bakery</a>
+                    <a href="#">Staples</a>
+                    <a href="#">Snacks & Branded Foods</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Home & Lifestyle</a>
+                <div class="dropdown">
+                    <a href="#">Furniture</a>
+                    <a href="#">Home Decor</a>
+                    <a href="#">Kitchenware</a>
+                    <a href="#">Bed & Bath</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Electronics</a>
+                <div class="dropdown">
+                    <a href="#">Mobiles</a>
+                    <a href="#">Laptops</a>
+                    <a href="#">Televisions</a>
+                    <a href="#">Appliances</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Fashion</a>
+                <div class="dropdown">
+                    <a href="womens.html">Women</a>
+                    <a href="#">Men</a>
+                    <a href="#">Boys</a>
+                    <a href="#">Girls</a>
+                    <a href="#">Infants</a>
+                    <a href="#">Crafts of India</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Industrial & Professional</a>
+                <div class="dropdown">
+                    <a href="#">Tools & Hardware</a>
+                    <a href="#">Office Supplies</a>
+                    <a href="#">Safety Equipment</a>
+                    <a href="#">Industrial Machinery</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Precious Jewellery</a>
+                <div class="dropdown">
+                    <a href="#">Gold Jewellery</a>
+                    <a href="#">Diamond Jewellery</a>
+                    <a href="#">Silver Jewellery</a>
+                    <a href="#">Gemstones</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Wellness</a>
+                <div class="dropdown">
+                    <a href="#">Health Supplements</a>
+                    <a href="#">Personal Care</a>
+                    <a href="#">Ayurveda</a>
+                    <a href="#">Fitness Equipment</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">All Categories</a>
+                <div class="dropdown">
+                    <a href="#">New Arrivals</a>
+                    <a href="#">Best Sellers</a>
+                    <a href="#">Deals</a>
+                    <a href="#">Clearance</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <div class="banner">
+            <div class="banner-item">
+                <h3>Best of Dry Fruits</h3>
+                <p>Up to 70% Off</p>
+                <img src="C:\Users\LENOVO\OneDrive\Documents\Try it on\dryfruits.jpeg" alt="Dry Fruits">
+                <button>Shop Now</button>
+            </div>
+            <div class="banner-item offer-3d" onclick="triggerCelebration(event)">
+                <h3>Tea-Time Essentials</h3>
+                <p>Up to 60% Off</p>
+                <img src="https://cdn.example.com/images/tea_time.jpg" alt="Tea-Time Essentials">
+                <button>Grab Now!</button>
+            </div>
+            <div class="banner-item">
+                <h3>Grocery Super Savers</h3>
+                <p>Up to 60% Off</p>
+                <img src="https://cdn.example.com/images/grocery_savers.jpg" alt="Grocery Super Savers">
+                <button>Shop Now</button>
+            </div>
+        </div>
+
+        <div class="deals-section">
+            <h2>Best Grocery - Unbeatable Prices</h2>
+            <p>Limited Time Deal</p>
+            <div class="deal-items">
+                <div class="deal-item">
+                    <img src="https://cdn.example.com/images/coffee.jpg" alt="Coffee">
+                    <h4>Continental Xtra Coffee</h4>
+                    <p>MRP ₹249</p>
+                </div>
+                <div class="deal-item">
+                    <img src="https://cdn.example.com/images/bikaneri_bhujia.jpg" alt="Bikaneri Bhujia">
+                    <h4>Bikaneri Bhujia</h4>
+                    <p>MRP ₹149</p>
+                </div>
+                <div class="deal-item">
+                    <img src="https://cdn.example.com/images/red_flour.jpg" alt="Flour">
+                    <h4>Red Flour Family Pack</h4>
+                    <p>MRP ₹199</p>
+                </div>
+                <div class="deal-item">
+                    <img src="https://cdn.example.com/images/biodegradable_bags.jpg" alt="Biodegradable Bags">
+                    <h4>Biodegradable Bags</h4>
+                    <p>MRP ₹249</p>
+                </div>
+                <div class="deal-item">
+                    <img src="https://cdn.example.com/images/polo_tshirt.jpg" alt="Polo T-Shirt">
+                    <h4>Polo T-Shirt for Men</h4>
+                    <p>MRP ₹132</p>
+                </div>
+                <div class="deal-item">
+                    <img src="https://cdn.example.com/images/earphones.jpg" alt="Earphones">
+                    <h4>Wired Earphones</h4>
+                    <p>MRP ₹299</p>
+                </div>
+                <div class="deal-item">
+                    <img src="https://cdn.example.com/images/cow_ghee.jpg" alt="Cow Ghee">
+                    <h4>Booster Pure Cow Ghee</h4>
+                    <p>MRP ₹699</p>
+                </div>
+            </div>
+            <button onclick="triggerCelebration(event)">Shop Now</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-section">
+            <h4>All Categories</h4>
+            <ul>
+                <li><a href="#">Groceries</a></li>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Fashion</a></li>
+                <li><a href="#">Home & Lifestyle</a></li>
+                <li><a href="#">Wellness</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Popular Categories</h4>
+            <ul>
+                <li><a href="#">Smartphones</a></li>
+                <li><a href="#">Ethnic Wear</a></li>
+                <li><a href="#">Snacks & Beverages</a></li>
+                <li><a href="#">Home Decor</a></li>
+                <li><a href="#">Jewellery</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Contact Us</h4>
+            <ul>
+                <li><a href="#">Email: support@jiomart.com</a></li>
+                <li><a href="#">Phone: 1800-123-4567</a></li>
+                <li><a href="#">Live Chat</a></li>
+                <li><a href="#">Help Center</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Customer Account</h4>
+            <ul>
+                <li><a href="#">My Account</a></li>
+                <li><a href="#">Order History</a></li>
+                <li><a href="#">Wishlist</a></li>
+                <li><a href="#">Track Order</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Download the App</h4>
+            <ul>
+                <li><a href="#">Google Play Store</a></li>
+                <li><a href="#">Apple App Store</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const toggle = document.querySelector('.theme-toggle');
+            toggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        }
+
+        // Sign-In Modal
+        function openModal() {
+            document.getElementById('signInModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('signInModal').style.display = 'none';
+        }
+
+        function submitPhone() {
+            const phone = document.getElementById('phoneNumber').value;
+            if (phone.match(/^[0-9]{10}$/)) {
+                alert('Phone number submitted: ' + phone);
+                closeModal();
+            } else {
+                alert('Please enter a valid 10-digit phone number.');
+            }
+        }
+
+        // Flying Elements
+        function createFlyingElement() {
+            const element = document.createElement('div');
+            element.className = 'flying-element';
+            const img = document.createElement('img');
+            const items = [
+                'https://cdn.example.com/images/bag.png',
+                'https://cdn.example.com/images/coin.png',
+                'https://cdn.example.com/images/sparkle.png',
+                'https://cdn.example.com/images/gift.png',
+                'https://cdn.example.com/images/apple.png',
+                'https://cdn.example.com/images/shirt.png'
+            ];
+            img.src = items[Math.floor(Math.random() * items.length)];
+            element.appendChild(img);
+
+            const side = Math.random() < 0.5 ? 'left' : 'right';
+            element.style[side] = `${Math.random() * 15}%`;
+            element.style.animationDelay = `${Math.random() * 3}s`;
+
+            document.body.appendChild(element);
+
+            setTimeout(() => element.remove(), 8000);
+        }
+
+        setInterval(createFlyingElement, 500);
+
+        // Coin Explosion
+        function createCoinExplosion(x, y, parent) {
+            for (let i = 0; i < 20; i++) {
+                const coin = document.createElement('div');
+                coin.className = 'coin';
+                const angle = Math.random() * 360;
+                const distance = 100 + Math.random() * 100;
+                const xPos = Math.cos(angle) * distance;
+                const yPos = Math.sin(angle) * distance;
+                coin.style.setProperty('--x', `${xPos}px`);
+                coin.style.setProperty('--y', `${yPos}px`);
+                coin.style.left = `${x}px`;
+                coin.style.top = `${y}px`;
+                parent.appendChild(coin);
+
+                setTimeout(() => coin.remove(), 1500);
+            }
+        }
+
+        // Celebration Effect
+        function triggerCelebration(event) {
+            const button = event.currentTarget;
+            const rect = button.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+
+            createCoinExplosion(x, y, document.body);
+
+            const celebration = document.createElement('div');
+            celebration.className = 'celebration';
+            document.body.appendChild(celebration);
+
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                const colors = [
+                    ['#FF5252', '#FF1744'],
+                    ['#FFD740', '#FFCA28'],
+                    ['#40C4FF', '#0288D1'],
+                    ['#69F0AE', '#00C853']
+                ];
+                const colorPair = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.setProperty('--color1', colorPair[0]);
+                confetti.style.setProperty('--color2', colorPair[1]);
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                celebration.appendChild(confetti);
+            }
+
+            setTimeout(() => celebration.remove(), 3000);
+        }
+
+        // Mouse Trail Effect
+        const trailElements = [];
+        const maxTrails = 20;
+
+        document.addEventListener('mousemove', (e) => {
+            const trail = document.createElement('div');
+            trail.className = 'trail';
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
+            document.body.appendChild(trail);
+
+            trailElements.push(trail);
+            if (trailElements.length > maxTrails) {
+                const oldTrail = trailElements.shift();
+                oldTrail.remove();
+            }
+
+            setTimeout(() => {
+                trail.style.opacity = '0';
+                setTimeout(() => trail.remove(), 500);
+            }, 300);
+        });
+    </script>
+</body>
+</html>

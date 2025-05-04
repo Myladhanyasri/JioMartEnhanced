@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JioMart - Women's Fashion</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Light and Dark Mode */
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        :root {
+            --bg-gradient: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            --text-color: #333;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --header-bg: linear-gradient(90deg, #005BAC, #0288D1);
+            --header-text: white;
+            --accent-color: #FFD700;
+            --offer-bg: #F06292;
+        }
+
+        body.dark-mode {
+            --bg-gradient: linear-gradient(135deg, #311B92, #5C6BC0);
+            --text-color: #e0e0e0;
+            --card-bg: rgba(50, 50, 50, 0.9);
+            --shadow-color: rgba(255, 255, 255, 0.1);
+            --header-bg: linear-gradient(90deg, #003D7A, #01579B);
+            --header-text: #e0e0e0;
+            --accent-color: #FFCA28;
+            --offer-bg: #D81B60;
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .location {
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .search-bar input {
+            padding: 12px 20px;
+            width: 400px;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background: var(--card-bg);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            transition: all 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .search-bar input:focus {
+            box-shadow: 0 0 15px rgba(0, 91, 172, 0.7);
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(360deg);
+        }
+
+        .sign-in {
+            background: linear-gradient(45deg, var(--accent-color), #FFCA28);
+            color: #005BAC;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+
+        .sign-in:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Navigation Styles */
+        nav {
+            background: var(--header-bg);
+            padding: 15px 30px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            position: relative;
+            z-index: 10;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav ul li a {
+            color: var(--header-text);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+            border-radius: 25px;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        nav ul li a:hover::after {
+            content: '➜';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+            font-size: 14px;
+            animation: bounce 0.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-50%) translateX(5px); }
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            background: var(--card-bg);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            z-index: 1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .dropdown a {
+            color: #005BAC !important;
+            padding: 12px 20px;
+            display: block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown a:hover {
+            background: #f1f1f1;
+            color: #003D7A !important;
+        }
+
+        nav ul li:hover .dropdown {
+            display: block;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 15px 30px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            margin: 20px 30px;
+            position: relative;
+            z-index: 8;
+        }
+
+        .breadcrumb a {
+            color: #005BAC;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #D81B60;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            padding: 40px;
+            min-height: calc(100vh - 400px);
+            position: relative;
+            z-index: 8;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            margin-right: 30px;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 20px;
+            color: var(--text-color);
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .sidebar ul li a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            color: #D81B60;
+            padding-left: 10px;
+        }
+
+        .sidebar ul li.has-submenu::before {
+            content: '▶';
+            position: absolute;
+            left: -20px;
+            top: 5px;
+            font-size: 14px;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar ul li.has-submenu:hover::before {
+            transform: rotate(90deg) translateX(5px);
+            color: #D81B60;
+            text-shadow: 0 0 8px #D81B60;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: rotate(90deg) translateX(5px) scale(1); }
+            50% { transform: rotate(90deg) translateX(5px) scale(1.3); }
+            100% { transform: rotate(90deg) translateX(5px) scale(1); }
+        }
+
+        .sidebar ul li.active ul {
+            display: block;
+        }
+
+        .sidebar ul li ul {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .filter-section {
+            margin-top: 30px;
+        }
+
+        .filter-section label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        /* Product Section */
+        .product-section {
+            flex: 1;
+        }
+
+        .banner {
+            background: linear-gradient(45deg, var(--offer-bg), #F48FB1);
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+        }
+
+        .banner h1 {
+            color: var(--header-text);
+            font-size: 32px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .sort {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 30px;
+        }
+
+        .sort select {
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background: var(--card-bg);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .sort select:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(0, 91, 172, 0.7);
+        }
+
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            perspective: 1000px;
+        }
+
+        .product-item {
+            width: 220px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .product-item:hover {
+            transform: scale(1.05) rotateY(10deg);
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+
+        .product-item img {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .product-item .fulfilled {
+            color: #FF4D4D;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+
+        .product-item h4 {
+            color: var(--text-color);
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .product-item button {
+            background: linear-gradient(45deg, #005BAC, #0288D1);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .product-item button:hover {
+            background: linear-gradient(45deg, #003D7A, #01579B);
+            box-shadow: 0 0 15px rgba(0, 91, 172, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .wishlist {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 24px;
+            color: #ccc;
+            transition: all 0.3s ease;
+        }
+
+        .wishlist:hover {
+            color: #FF4D4D;
+            transform: scale(1.2);
+        }
+
+        /* Camera Overlay */
+        #camera-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        #camera-feed {
+            max-width: 80%;
+            max-height: 70%;
+            border: 3px solid white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        #dress-overlay {
+            position: absolute;
+            width: 50%;
+            top: 20%;
+            left: 25%;
+            opacity: 0.8;
+        }
+
+        #screenshot-btn {
+            background: linear-gradient(45deg, var(--accent-color), #FFCA28);
+            color: #005BAC;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        #screenshot-btn:hover {
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* Flying Elements */
+        .flying-element {
+            position: fixed;
+            z-index: 5;
+            pointer-events: none;
+            animation: fly 8s infinite ease-in-out;
+        }
+
+        .flying-element img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            50% { transform: translateY(50vh) rotate(360deg); opacity: 0.8; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Celebration Effect */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(45deg, var(--color1), var(--color2));
+            animation: confettiFall 3s ease-in-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Footer */
+        footer {
+            background: var(--header-bg);
+            color: var(--header-text);
+            padding: 50px 30px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: var(--accent-color);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin: 12px 0;
+        }
+
+        .footer-section ul li a {
+            color: var(--header-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent-color);
+            padding-left: 10px;
+        }
+
+        /* Mouse Trail Effect */
+        .trail {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, rgba(0, 91, 172, 0.9), transparent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            box-shadow: 0 0 10px rgba(0, 91, 172, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">JioMart</div>
+        <div class="location">📍 Deliver to Guntur 522211</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search JioMart">
+        </div>
+        <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
+        <div class="sign-in">Sign In</div>
+    </header>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="#">Groceries</a>
+                <div class="dropdown">
+                    <a href="#">Fruits & Vegetables</a>
+                    <a href="#">Dairy & Bakery</a>
+                    <a href="#">Staples</a>
+                    <a href="#">Snacks & Branded Foods</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Home & Lifestyle</a>
+                <div class="dropdown">
+                    <a href="#">Furniture</a>
+                    <a href="#">Home Decor</a>
+                    <a href="#">Kitchenware</a>
+                    <a href="#">Bed & Bath</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Electronics</a>
+                <div class="dropdown">
+                    <a href="#">Mobiles</a>
+                    <a href="#">Laptops</a>
+                    <a href="#">Televisions</a>
+                    <a href="#">Appliances</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Fashion</a>
+                <div class="dropdown">
+                    <a href="womens.html">Women</a>
+                    <a href="#">Men</a>
+                    <a href="#">Boys</a>
+                    <a href="#">Girls</a>
+                    <a href="#">Infants</a>
+                    <a href="#">Crafts of India</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Industrial & Professional</a>
+                <div class="dropdown">
+                    <a href="#">Tools & Hardware</a>
+                    <a href="#">Office Supplies</a>
+                    <a href="#">Safety Equipment</a>
+                    <a href="#">Industrial Machinery</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Precious Jewellery</a>
+                <div class="dropdown">
+                    <a href="#">Gold Jewellery</a>
+                    <a href="#">Diamond Jewellery</a>
+                    <a href="#">Silver Jewellery</a>
+                    <a href="#">Gemstones</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">Wellness</a>
+                <div class="dropdown">
+                    <a href="#">Health Supplements</a>
+                    <a href="#">Personal Care</a>
+                    <a href="#">Ayurveda</a>
+                    <a href="#">Fitness Equipment</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">All Categories</a>
+                <div class="dropdown">
+                    <a href="#">New Arrivals</a>
+                    <a href="#">Best Sellers</a>
+                    <a href="#">Deals</a>
+                    <a href="#">Clearance</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="index.html">Home</a> > <a href="#">All Category</a> > <a href="#">Fashion</a> > Women
+    </div>
+
+    <div class="main-content">
+        <div class="sidebar">
+            <h3>Category</h3>
+            <ul>
+                <li><a href="#">Men</a></li>
+                <li class="has-submenu active">
+                    <a href="#">Women</a>
+                    <ul>
+                        <li><a href="#">Ethnic Wear</a></li>
+                        <li><a href="#">Western Wear</a></li>
+                        <li><a href="#">Footwear</a></li>
+                        <li><a href="#">Bags, Belts & Wallets</a></li>
+                        <li><a href="#">Watches</a></li>
+                        <li><a href="#">Eyewear</a></li>
+                        <li><a href="#">Lingerie & Innerwear</a></li>
+                        <li><a href="#">Night & Lounge Wear</a></li>
+                        <li><a href="#">Clothing Accessories</a></li>
+                        <li><a href="#">Gemstones Coins & Bars</a></li>
+                        <li><a href="#">Silver Jewellery</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="filter-section">
+                <h3>Filters</h3>
+                <h4>Availability</h4>
+                <label>
+                    <input type="checkbox"> Include Out of Stock
+                </label>
+            </div>
+        </div>
+
+        <div class="product-section">
+            <div class="banner">
+                <h1>Womenswear</h1>
+            </div>
+            <div class="sort">
+                <label for="sort">Sort by: </label>
+                <select id="sort">
+                    <option>Popularity</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest First</option>
+                </select>
+            </div>
+            <div class="products">
+                <div class="product-item">
+                    <span class="wishlist">❤️</span>
+                    <img src="https://cdn.example.com/images/kurta.jpg" alt="Kurta">
+                    <p class="fulfilled">Fulfilled By JioMart</p>
+                    <h4>Printed Straight Kurta with Embroidery</h4>
+                    <button onclick="tryOnDress('https://cdn.example.com/images/kurta.jpg')">Try It On Me</button>
+                    <button onclick="triggerCelebration(event)">Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <span class="wishlist">❤️</span>
+                    <img src="https://cdn.example.com/images/sweatshirt.jpg" alt="Sweatshirt">
+                    <p class="fulfilled">Fulfilled By JioMart</p>
+                    <h4>Striped Round-Neck Sweatshirt</h4>
+                    <button onclick="tryOnDress('https://cdn.example.com/images/sweatshirt.jpg')">Try It On Me</button>
+                    <button onclick="triggerCelebration(event)">Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <span class="wishlist">❤️</span>
+                    <img src="https://cdn.example.com/images/hoodie.jpg" alt="Hoodie">
+                    <p class="fulfilled">Fulfilled By JioMart</p>
+                    <h4>Hoodie with Split Kangaroo Pockets</h4>
+                    <button onclick="tryOnDress('https://cdn.example.com/images/hoodie.jpg')">Try It On Me</button>
+                    <button onclick="triggerCelebration(event)">Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <span class="wishlist">❤️</span>
+                    <img src="https://cdn.example.com/images/hoodie.jpg" alt="Hoodie">
+                    <p class="fulfilled">Fulfilled By JioMart</p>
+                    <h4>Hoodie with Split Kangaroo Pockets</h4>
+                    <button onclick="tryOnDress('https://cdn.example.com/images/hoodie.jpg')">Try It On Me</button>
+                    <button onclick="triggerCelebration(event)">Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <span class="wishlist">❤️</span>
+                    <img src="https://cdn.example.com/images/hoodie.jpg" alt="Hoodie">
+                    <p class="fulfilled">Fulfilled By JioMart</p>
+                    <h4>Hoodie with Split Kangaroo Pockets</h4>
+                    <button onclick="tryOnDress('https://cdn.example.com/images/hoodie.jpg')">Try It On Me</button>
+                    <button onclick="triggerCelebration(event)">Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <span class="wishlist">❤️</span>
+                    <img src="https://cdn.example.com/images/hoodie.jpg" alt="Hoodie">
+                    <p class="fulfilled">Fulfilled By JioMart</p>
+                    <h4>Hoodie with Split Kangaroo Pockets</h4>
+                    <button onclick="tryOnDress('https://cdn.example.com/images/hoodie.jpg')">Try It On Me</button>
+                    <button onclick="triggerCelebration(event)">Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <span class="wishlist">❤️</span>
+                    <img src="https://cdn.example.com/images/hoodie.jpg" alt="Hoodie">
+                    <p class="fulfilled">Fulfilled By JioMart</p>
+                    <h4>Hoodie with Split Kangaroo Pockets</h4>
+                    <button onclick="tryOnDress('https://cdn.example.com/images/hoodie.jpg')">Try It On Me</button>
+                    <button onclick="triggerCelebration(event)">Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <span class="wishlist">❤️</span>
+                    <img src="https://cdn.example.com/images/hoodie.jpg" alt="Hoodie">
+                    <p class="fulfilled">Fulfilled By JioMart</p>
+                    <h4>Hoodie with Split Kangaroo Pockets</h4>
+                    <button onclick="tryOnDress('https://cdn.example.com/images/hoodie.jpg')">Try It On Me</button>
+                    <button onclick="triggerCelebration(event)">Add to Cart</button>
+                </div>
+                <div class="product-item">
+                    <span class="wishlist">❤️</span>
+                    <img src="https://cdn.example.com/images/hoodie.jpg" alt="Hoodie">
+                    <p class="fulfilled">Fulfilled By JioMart</p>
+                    <h4>Hoodie with Split Kangaroo Pockets</h4>
+                    <button onclick="tryOnDress('https://cdn.example.com/images/hoodie.jpg')">Try It On Me</button>
+                    <button onclick="triggerCelebration(event)">Add to Cart</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <div id="camera-overlay">
+        <video id="camera-feed" autoplay></video>
+        <img id="dress-overlay" src="" alt="Dress Overlay">
+        <button id="screenshot-btn" onclick="takeScreenshot()">Take Screenshot</button>
+    </div>
+
+    <footer>
+        <div class="footer-section">
+            <h4>All Categories</h4>
+            <ul>
+                <li><a href="#">Groceries</a></li>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Fashion</a></li>
+                <li><a href="#">Home & Lifestyle</a></li>
+                <li><a href="#">Wellness</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Popular Categories</h4>
+            <ul>
+                <li><a href="#">Smartphones</a></li>
+                <li><a href="#">Ethnic Wear</a></li>
+                <li><a href="#">Snacks & Beverages</a></li>
+                <li><a href="#">Home Decor</a></li>
+                <li><a href="#">Jewellery</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Contact Us</h4>
+            <ul>
+                <li><a href="#">Email: support@jiomart.com</a></li>
+                <li><a href="#">Phone: 1800-123-4567</a></li>
+                <li><a href="#">Live Chat</a></li>
+                <li><a href="#">Help Center</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Customer Account</h4>
+            <ul>
+                <li><a href="#">My Account</a></li>
+                <li><a href="#">Order History</a></li>
+                <li><a href="#">Wishlist</a></li>
+                <li><a href="#">Track Order</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>Download the App</h4>
+            <ul>
+                <li><a href="#">Google Play Store</a></li>
+                <li><a href="#">Apple App Store</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const toggle = document.querySelector('.theme-toggle');
+            toggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        }
+
+        // Try It On Me Feature
+        async function tryOnDress(dressImage) {
+            const overlay = document.getElementById('camera-overlay');
+            const video = document.getElementById('camera-feed');
+            const dressOverlay = document.getElementById('dress-overlay');
+
+            overlay.style.display = 'flex';
+            dressOverlay.src = dressImage;
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error("Error accessing camera: ", err);
+                alert("Unable to access camera. Please ensure you have given permission and are using a secure connection (HTTPS).");
+                overlay.style.display = 'none';
+            }
+
+            overlay.onclick = (e) => {
+                if (e.target === overlay) {
+                    video.srcObject.getTracks().forEach(track => track.stop());
+                    overlay.style.display = 'none';
+                }
+            };
+        }
+
+        // Take Screenshot
+        function takeScreenshot() {
+            const video = document.getElementById('camera-feed');
+            const dressOverlay = document.getElementById('dress-overlay');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const dressImg = new Image();
+            dressImg.src = dressOverlay.src;
+            dressImg.onload = () => {
+                const dressWidth = canvas.width * 0.5;
+                const dressHeight = dressImg.height * (dressWidth / dressImg.width);
+                const dressX = canvas.width * 0.25;
+                const dressY = canvas.height * 0.2;
+                ctx.globalAlpha = 0.8;
+                ctx.drawImage(dressImg, dressX, dressY, dressWidth, dressHeight);
+                ctx.globalAlpha = 1.0;
+
+                const link = document.createElement('a');
+                link.download = 'try-on-screenshot.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            };
+        }
+
+        // Flying Elements
+        function createFlyingElement() {
+            const element = document.createElement('div');
+            element.className = 'flying-element';
+            const img = document.createElement('img');
+            const items = [
+                'https://cdn.example.com/images/bag.png',
+                'https://cdn.example.com/images/coin.png',
+                'https://cdn.example.com/images/sparkle.png',
+                'https://cdn.example.com/images/gift.png',
+                'https://cdn.example.com/images/dress.png',
+                'https://cdn.example.com/images/shoes.png'
+            ];
+            img.src = items[Math.floor(Math.random() * items.length)];
+            element.appendChild(img);
+
+            const side = Math.random() < 0.5 ? 'left' : 'right';
+            element.style[side] = `${Math.random() * 15}%`;
+            element.style.animationDelay = `${Math.random() * 3}s`;
+
+            document.body.appendChild(element);
+
+            setTimeout(() => element.remove(), 8000);
+        }
+
+        setInterval(createFlyingElement, 500);
+
+        // Celebration Effect
+        function triggerCelebration(event) {
+            const button = event.currentTarget;
+            const rect = button.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+
+            const celebration = document.createElement('div');
+            celebration.className = 'celebration';
+            document.body.appendChild(celebration);
+
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                const colors = [
+                    ['#FF5252', '#FF1744'],
+                    ['#FFD740', '#FFCA28'],
+                    ['#40C4FF', '#0288D1'],
+                    ['#69F0AE', '#00C853']
+                ];
+                const colorPair = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.setProperty('--color1', colorPair[0]);
+                confetti.style.setProperty('--color2', colorPair[1]);
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.animationDelay = `${Math.random() * 2}s`;
+                celebration.appendChild(confetti);
+            }
+
+            setTimeout(() => celebration.remove(), 3000);
+        }
+
+        // Mouse Trail Effect
+        const trailElements = [];
+        const maxTrails = 20;
+
+        document.addEventListener('mousemove', (e) => {
+            const trail = document.createElement('div');
+            trail.className = 'trail';
+            trail.style.left = e.clientX + 'px';
+            trail.style.top = e.clientY + 'px';
+            document.body.appendChild(trail);
+
+            trailElements.push(trail);
+            if (trailElements.length > maxTrails) {
+                const oldTrail = trailElements.shift();
+                oldTrail.remove();
+            }
+
+            setTimeout(() => {
+                trail.style.opacity = '0';
+                setTimeout(() => trail.remove(), 500);
+            }, 300);
+        });
+    </script>
+</body>
+</html>
