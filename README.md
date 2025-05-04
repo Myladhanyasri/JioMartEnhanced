@@ -1,5 +1,6 @@
 👗 JioMart Enhanced - Virtual Try-On & Stunning UI
 Welcome to JioMart Enhanced, a reimagined online shopping experience that combines cutting-edge technology with a visually captivating design! We’ve supercharged the JioMart platform with a "Try It On Me" feature to virtually try on clothes using your camera, and we’ve revamped the CSS for both the homepage and women’s page to deliver a seamless, modern, and engaging user interface. Whether you're shopping for groceries, fashion, or electronics, this project makes online shopping as fun as it is functional.
+
 🌟 What is JioMart Enhanced?
 JioMart Enhanced is an upgraded version of the JioMart website, focusing on two key areas:  
 
@@ -9,7 +10,6 @@ UI/UX Overhaul: We’ve transformed the homepage and women’s page with modern 
 Our goal? To make online shopping on platforms like JioMart feel more personal, interactive, and visually stunning—whether you're picking out a dress or browsing grocery deals.
 ✨ Features
 🛍️ General Features
-
 Multi-Category Shopping: Shop across groceries, fashion, electronics, home & lifestyle, and more with an intuitive navigation system.
 Responsive Design: Fully responsive layouts for desktops, tablets, and mobile devices.
 Light/Dark Mode: Toggle between light and dark themes for a personalized experience.
@@ -107,6 +107,6 @@ We welcome contributions to JioMart Enhanced! Fork the repository, make improvem
 📜 License
 This project is licensed under the MIT License. See the LICENSE file for details.
 📬 Contact
-Have questions or ideas? Reach out at your-email@example.com or open an issue on GitHub.
+Have questions or ideas? Reach out at dhanyasrimyla@gmail.com or open an issue on GitHub.
 
 JioMart Enhanced – Where shopping meets innovation and style! 🛍️✨
